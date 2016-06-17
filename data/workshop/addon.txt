@@ -1,0 +1,6 @@
+"AddonInfo"
+{
+  "name" "Surface friction tool"
+  "author_name" "DVD"
+  "info" "Modifies the surface friction of a prop"
+}
