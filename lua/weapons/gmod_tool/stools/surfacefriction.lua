@@ -1,21 +1,26 @@
-﻿TOOL.Category   = "Construction"      -- Name of the category
-TOOL.Name       = "#Surface Friction" -- Name to display
-TOOL.Command    = nil                 -- Command on click (nil for default)
-TOOL.ConfigName = ""                  -- Config file name (nil for default)
-
+﻿TOOL.Category     = "Construction"      -- Name of the category
+TOOL.Name         = "#Surface Friction" -- Name to display
+TOOL.Command      = nil                 -- Command on click (nil for default)
+TOOL.ConfigName   = ""                  -- Config file name (nil for default)
 TOOL.ClientConVar =
 { 
   [ "multy" ] = "1", -- Default Surface friction multiplyer
   [ "advic" ] = "1"  -- Advisor
 }
 
+local gsToolName = "surfacefriction"
+
 if CLIENT then
-  language.Add( "Tool.surfacefriction.name", "Surface Friction Multiplyer" )
-  language.Add( "Tool.surfacefriction.desc", "Multiplyes the surface friction of a prop by a given amount" )
-  language.Add( "Tool.surfacefriction.0"   , "Left Click apply, Right to copy, Reload to turn it back to normal" )
-  language.Add( "Undone.surfacefriction"   , "Undone Surface Friction" )
-  language.Add( "Cleanup.surfacefriction"  , "Surface Friction" )
-  language.Add( "Cleaned.surfacefriction"  , "Cleaned up Surface Friction" )
+  language.Add("tool."..gsToolName..".name"       , "Surface Friction Multiplyer")
+  language.Add("tool."..gsToolName..".desc"       , "Multiplyes the surface friction of a prop by a given amount")
+  language.Add("tool."..gsToolName..".0"          , "Left Click apply, Right to copy, Reload to turn it back to normal")
+  language.Add("tool."..gsToolName..".multy"      , "Surface friction multiplyer value applied on an object")
+  language.Add("tool."..gsToolName..".multy_con"  , "Friction factor:")
+  language.Add("tool."..gsToolName..".adviser"    , "When enabled draws the tool adviser for modificvation")
+  language.Add("tool."..gsToolName..".adviser_con", "Enable draw adviser") 
+  language.Add( "Undone."..gsToolName             , "Undone Surface Friction")
+  language.Add( "Cleanup."..gsToolName            , "Surface Friction")
+  language.Add( "Cleaned."..gsToolName            , "Cleaned up Surface Friction")  
 end
 
 if SERVER then
@@ -108,17 +113,11 @@ function TOOL:DrawHUD()
   end
 end
 
-function TOOL.BuildCPanel( CPanel )
-  Header = CPanel:AddControl( "Header", { Text = "#Tool.surfacefriction.name", Description  = "#Tool.surfacefriction.desc" }  )
-  
-  CPanel:AddControl("Slider", { 
-            Label  = "Friction factor: ",
-            Type  = "float",
-            Min    = -1000,
-            Max    =  1000,
-            Command = "surfacefriction_multy"})
-             
-  CPanel:AddControl("Checkbox", {
-            Label = "Enable Advisor",
-            Command = "surfacefriction_advic"})      
+function TOOL.BuildCPanel( CPanel ) local pItem
+  pItem = CPanel:SetName(language.GetPhrase("tool."..gsToolName..".name"))
+  pItem = CPanel:Help   (language.GetPhrase("tool."..gsToolName..".desc"))
+  pItem = CPanel:NumSlider(language.GetPhrase("tool."..gsToolName..".multy_con"), gsToolName.."_multy", -1000, -1000, 5)
+          pItem:SetTooltip(language.GetPhrase("tool."..gsToolName..".multy"))
+  pItem = CPanel:CheckBox (asmlib.GetPhrase("tool."..gsToolName..".adviser_con"), gsToolName.."_adviser")
+          pItem:SetTooltip(asmlib.GetPhrase("tool."..gsToolName..".adviser"))
 end
