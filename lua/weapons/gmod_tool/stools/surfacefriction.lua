@@ -3,7 +3,7 @@ TOOL.Name         = "#Surface Friction" -- Name to display
 TOOL.Command      = nil                 -- Command on click (nil for default)
 TOOL.ConfigName   = ""                  -- Config file name (nil for default)
 TOOL.ClientConVar =
-{ 
+{
   [ "multy" ] = "1", -- Default Surface friction multiplyer
   [ "advic" ] = "1"  -- Advisor
 }
@@ -17,10 +17,10 @@ if CLIENT then
   language.Add("tool."..gsToolName..".multy"      , "Surface friction multiplyer value applied on an object")
   language.Add("tool."..gsToolName..".multy_con"  , "Friction factor:")
   language.Add("tool."..gsToolName..".adviser"    , "When enabled draws the tool adviser for modificvation")
-  language.Add("tool."..gsToolName..".adviser_con", "Enable draw adviser") 
+  language.Add("tool."..gsToolName..".adviser_con", "Enable draw adviser")
   language.Add( "Undone."..gsToolName             , "Undone Surface Friction")
   language.Add( "Cleanup."..gsToolName            , "Surface Friction")
-  language.Add( "Cleaned."..gsToolName            , "Cleaned up Surface Friction")  
+  language.Add( "Cleaned."..gsToolName            , "Cleaned up Surface Friction")
 end
 
 if SERVER then
@@ -56,7 +56,7 @@ function TOOL:LeftClick( oTrace )
   if(!isPropTr(oTrace)) then return false end
   local nMulty = tonumber(self:GetClientInfo("multy")) or 0
         nMulty = math.Clamp(nMulty,-1000,1000)
-  local oPly   = self:GetOwner() 
+  local oPly   = self:GetOwner()
   SetSufaceFriction(oPly,oTrace.Entity,{ FrictionMul = nMulty })
   return true
 end
@@ -87,7 +87,7 @@ function TOOL:Think()
       oEnt:SetNWFloat("surffric_nw_fric",oEnt:GetFriction())
     end
   end
-  
+
 end
 
 function TOOL:DrawHUD()
@@ -118,6 +118,6 @@ function TOOL.BuildCPanel( CPanel ) local pItem
   pItem = CPanel:Help   (language.GetPhrase("tool."..gsToolName..".desc"))
   pItem = CPanel:NumSlider(language.GetPhrase("tool."..gsToolName..".multy_con"), gsToolName.."_multy", -1000, -1000, 5)
           pItem:SetTooltip(language.GetPhrase("tool."..gsToolName..".multy"))
-  pItem = CPanel:CheckBox (asmlib.GetPhrase("tool."..gsToolName..".adviser_con"), gsToolName.."_adviser")
-          pItem:SetTooltip(asmlib.GetPhrase("tool."..gsToolName..".adviser"))
+  pItem = CPanel:CheckBox (language.GetPhrase("tool."..gsToolName..".adviser_con"), gsToolName.."_adviser")
+          pItem:SetTooltip(language.GetPhrase("tool."..gsToolName..".adviser"))
 end
