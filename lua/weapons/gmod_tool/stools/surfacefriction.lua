@@ -8,19 +8,19 @@ TOOL.ClientConVar =
   [ "advic" ] = "1"  -- Advisor
 }
 
-local gsToolName = "surfacefriction"
+local gsTool = "surfacefriction"
 
 if CLIENT then
-  language.Add("tool."..gsToolName..".name"       , "Surface Friction Multiplyer")
-  language.Add("tool."..gsToolName..".desc"       , "Multiplyes the surface friction of a prop by a given amount")
-  language.Add("tool."..gsToolName..".0"          , "Left Click apply, Right to copy, Reload to turn it back to normal")
-  language.Add("tool."..gsToolName..".multy"      , "Surface friction multiplyer value applied on an object")
-  language.Add("tool."..gsToolName..".multy_con"  , "Friction factor:")
-  language.Add("tool."..gsToolName..".adviser"    , "When enabled draws the tool adviser for modificvation")
-  language.Add("tool."..gsToolName..".adviser_con", "Enable draw adviser")
-  language.Add( "Undone."..gsToolName             , "Undone Surface Friction")
-  language.Add( "Cleanup."..gsToolName            , "Surface Friction")
-  language.Add( "Cleaned."..gsToolName            , "Cleaned up Surface Friction")
+  language.Add("tool."..gsTool..".name"       , "Surface Friction Multiplyer")
+  language.Add("tool."..gsTool..".desc"       , "Multiplyes the surface friction of a prop by a given amount")
+  language.Add("tool."..gsTool..".0"          , "Left Click apply, Right to copy, Reload to turn it back to normal")
+  language.Add("tool."..gsTool..".multy"      , "Surface friction multiplyer value applied on an object")
+  language.Add("tool."..gsTool..".multy_con"  , "Friction factor:")
+  language.Add("tool."..gsTool..".adviser"    , "When enabled draws the tool adviser for modificvation")
+  language.Add("tool."..gsTool..".adviser_con", "Enable draw adviser")
+  language.Add( "Undone."..gsTool             , "Undone Surface Friction")
+  language.Add( "Cleanup."..gsTool            , "Surface Friction")
+  language.Add( "Cleaned."..gsTool            , "Cleaned up Surface Friction")
 end
 
 if SERVER then
@@ -38,8 +38,6 @@ function isPropTr(oTrace)
   end
   return false
 end
-
-
 
 function SetSufaceFriction(oPly,oEnt,tData)
   if not SERVER then return end
@@ -78,7 +76,6 @@ function TOOL:Reload(tTrace)
   end
 end
 
-
 function TOOL:Think()
   local tTrace = self:GetOwner():GetEyeTrace()
   if(tTrace) then
@@ -87,7 +84,6 @@ function TOOL:Think()
       oEnt:SetNWFloat("surffric_nw_fric",oEnt:GetFriction())
     end
   end
-
 end
 
 function TOOL:DrawHUD()
@@ -114,10 +110,10 @@ function TOOL:DrawHUD()
 end
 
 function TOOL.BuildCPanel( CPanel ) local pItem
-  pItem = CPanel:SetName(language.GetPhrase("tool."..gsToolName..".name"))
-  pItem = CPanel:Help   (language.GetPhrase("tool."..gsToolName..".desc"))
-  pItem = CPanel:NumSlider(language.GetPhrase("tool."..gsToolName..".multy_con"), gsToolName.."_multy", -1000, -1000, 5)
-          pItem:SetTooltip(language.GetPhrase("tool."..gsToolName..".multy"))
-  pItem = CPanel:CheckBox (language.GetPhrase("tool."..gsToolName..".adviser_con"), gsToolName.."_adviser")
-          pItem:SetTooltip(language.GetPhrase("tool."..gsToolName..".adviser"))
+  pItem = CPanel:SetName(language.GetPhrase("tool."..gsTool..".name"))
+  pItem = CPanel:Help   (language.GetPhrase("tool."..gsTool..".desc"))
+  pItem = CPanel:NumSlider(language.GetPhrase("tool."..gsTool..".multy_con"), gsTool.."_multy", -1000, 1000, 5)
+          pItem:SetTooltip(language.GetPhrase("tool."..gsTool..".multy"))
+  pItem = CPanel:CheckBox (language.GetPhrase("tool."..gsTool..".adviser_con"), gsTool.."_adviser")
+          pItem:SetTooltip(language.GetPhrase("tool."..gsTool..".adviser"))
 end
